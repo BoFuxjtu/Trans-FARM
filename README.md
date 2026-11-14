@@ -8,3 +8,4 @@ Explanation of files:
 1. The "Trans-FARM-Estimation.R" is the main R code to reproduce simulations of estimations in Section 5.1.
 2. The "Trans-FARM-CI.R" is the main R code to reproduce simulations of constructing simultaneous confidence intervals in Section 5.2.
 3. The "Trans-FARM-realdata.R" is the main R code to reproduce the real data analysis in Section 5.3.
+4. The "Trans-FARM-Estimation-Assumption4.R" is the main R code to reproduce simulations of estimations in Section C of the Supplementary Materials.
