@@ -47,7 +47,7 @@ Trans_FARM = function(n0,nk,p,r,K,K_A,s,input_type="varphi",w,eta){
   for (k in 1:K){
     Bk = matrix(runif(p*r,-1,1),nrow=p)
     Fk = matrix(rnorm(nk*r),nrow=nk)
-    epsk = rmvnorm(nk,mean=meanx,sigma=0.2^2*diag(p))
+    epsk = rmvnorm(1,mean=meanx,sigma=0.2^2*diag(p))
     sigmak = sigma0+t(epsk)%*%epsk
     #Uk = rmvnorm(nk,mean=meanx,sigma=sigmak)
     Uk = rmvt(nk,delta=meanx,sigma=sigmak,df=10)
@@ -60,9 +60,9 @@ Trans_FARM = function(n0,nk,p,r,K,K_A,s,input_type="varphi",w,eta){
       betak = beta0+(eta/p)*Rade1
     }else{
       betak = beta0+(2*eta/p)*Rade1
-      S_k <- sample((2*s+1):p, s)
-      S_k <- c(S_k,(s+1):2*s)
-      betak[S_k] = betak[S_k]+0.5
+      S_k <- sample((2*s+1):p, size=s, replace=FALSE)
+      shift_idx <- c((s+1):(2*s), S_k)
+      betak[shift_idx] <- betak[shift_idx] + 0.5
     }
     if(input_type=="gamma"){
       if(k %in% A_eta){
@@ -172,7 +172,7 @@ run_Trans_FARM_parallel <- function(n0=500,nk=500,p=1000,r=2,K=10,K_A,s=3,input_
                      .export=c("Trans_FARM"),
                      .options.snow = opts) %dopar% {
                        cat("Iteration:", itr, "\n")
-                       Trans_FARM.est <- Trans_FARM(n0=n0,nk=nk,p=p,r=r,K=K,K_A=K_A,s=s,input_type=input_type,w=0,eta=eta)
+                       Trans_FARM.est <- Trans_FARM(n0=n0,nk=nk,p=p,r=r,K=K,K_A=K_A,s=s,input_type=input_type,w=w,eta=eta)
                        error.only_FARM <- Trans_FARM.est$error.only_FARM
                        error.only_Lasso <- Trans_FARM.est$error.only_Lasso
                        error.Trans_FARM <- Trans_FARM.est$error.Trans_FARM

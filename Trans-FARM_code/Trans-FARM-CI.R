@@ -63,8 +63,7 @@ Trans_FARM = function(n0,nk,p,r,K,K_A,s,q,input_type="varphi",w,eta,alpha=0.05){
   sigma0=diag(p)
   for (i in 1:p){
     for (j in 1:p){sigma0[i,j]=0.5^(abs(i-j))}}
-  #U0 = rmvnorm(n0,mean=meanx,sigma=sigma0)
-  U0 = matrix(rnorm(n0*p),nrow=n0)
+  U0 = rmvnorm(n0,mean=meanx,sigma=sigma0)
   #U0 = rmvt(n0,delta=meanx,sigma=sigma0,df=10)
   X0 = F0%*%t(B0)+U0
   #E0=rnorm(n0,mean=0,sd=1)
@@ -92,7 +91,7 @@ Trans_FARM = function(n0,nk,p,r,K,K_A,s,q,input_type="varphi",w,eta,alpha=0.05){
   for (k in 1:K){
     Bk = matrix(runif(p*r,-1,1),nrow=p)
     Fk = matrix(rnorm(nk*r),nrow=nk)
-    epsk = rmvnorm(nk,mean=meanx,sigma=0.2^2*diag(p))
+    epsk = rmvnorm(1,mean=meanx,sigma=0.2^2*diag(p))
     sigmak = sigma0+t(epsk)%*%epsk
     Uk = rmvnorm(nk,mean=meanx,sigma=sigmak)
     #Uk = rmvt(nk,delta=meanx,sigma=sigmak,df=10)
